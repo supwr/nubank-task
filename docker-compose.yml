@@ -1,0 +1,8 @@
+version: '3.1'
+services:
+    app:
+        container_name: nubank_test_app
+        build: docker/php-fpm
+        working_dir: /app
+        volumes:
+            - '.:/app'
