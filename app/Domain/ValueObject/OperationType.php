@@ -18,7 +18,7 @@ class OperationType
 
     public function __construct(string $type)
     {
-        if(!$this->isValid($type)) {
+        if (!$this->isValid($type)) {
             throw new InvalidOperationTypeException(
                 sprintf('Invalid operation type: %s', $type)
             );
