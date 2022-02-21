@@ -8,9 +8,9 @@ use App\Domain\Exceptions\ValueObject\OperationType\InvalidOperationTypeExceptio
 
 class OperationType
 {
-    private const SELL_OPERATION = 'sell';
-    private const BUY_OPERATION = 'buy';
-    private const VALID_OPERATION_TYPES = [
+    public const SELL_OPERATION = 'sell';
+    public const BUY_OPERATION = 'buy';
+    public const VALID_OPERATION_TYPES = [
         self::SELL_OPERATION,
         self::BUY_OPERATION
     ];

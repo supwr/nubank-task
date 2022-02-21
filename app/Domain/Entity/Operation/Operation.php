@@ -16,4 +16,13 @@ final class Operation
         public Quantity $quantity
     ) {
     }
+
+    public function toArray()
+    {
+        return [
+            'operation' => $this->operation->toString(),
+            'unit-cost' => $this->unitCost->toFloat(),
+            'quantity' => $this->quantity->toInt()
+        ];
+    }
 }
