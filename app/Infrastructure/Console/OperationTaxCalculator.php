@@ -4,29 +4,33 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Console;
 
-use App\Domain\Entity\Operation;
+use App\Domain\Entity\Operation\OperationCollectionFactory;
 use App\Domain\ValueObject\OperationType;
 use App\Infrastructure\Validator\OperationCollectionValidator;
+use App\Infrastructure\Shared\Helper\JsonInputHelper;
+use App\Application\Command\CalculateOperationCollectionTax;
 
 class OperationTaxCalculator
 {
-    public static function run()
+    public function __construct(private CalculateOperationCollectionTax $taxCalculator)
+    {
+    }
+
+    public function run()
     {
         $operations = [];
 
         while (!empty($input = readline("Enter your operation list: "))) {
-            $collection = json_decode(
-                $input,
-                true
-            );
+            $operationCollection = JsonInputHelper::parseJson($input);
 
-            $validator = new OperationCollectionValidator($collection);
+            $validator = new OperationCollectionValidator($operationCollection);
 
             if ($validator->hasErrors()) {
                 fwrite(STDOUT, 'This collection structure is incorrect' . PHP_EOL);
                 exit();
             }
 
+            $o = OperationCollectionFactory::fromArray($operationCollection);
             $operations[] = $input;
         }
 
