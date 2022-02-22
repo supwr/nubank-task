@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domain\ValueObject;
 
-use App\Domain\Exceptions\ValueObject\OperationType\InvalidUnitCostException;
+use App\Domain\Exceptions\ValueObject\UnitCost\InvalidUnitCostException;
 
 class UnitCost
 {

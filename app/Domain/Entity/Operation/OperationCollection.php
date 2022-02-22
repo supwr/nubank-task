@@ -10,7 +10,6 @@ use App\Domain\ValueObject\OperationType;
 final class OperationCollection
 {
     private array $operations;
-    private array $aggregateBuyOperations;
 
     public function __construct()
     {
@@ -21,7 +20,6 @@ final class OperationCollection
     public function add(Operation $operation): bool
     {
         $this->operations[] = $operation;
-        $this->addToBuyAggregate($operation);
         return true;
     }
 
@@ -46,6 +44,13 @@ final class OperationCollection
         return $this->operations;
     }
 
+
+    /**
+     * getOperationsByType
+     *
+     * @param  mixed $type
+     * @return array
+     */
     private function getOperationsByType(OperationType $type): array
     {
         return array_filter($this->operations, function ($operation) use ($type) {
@@ -53,45 +58,98 @@ final class OperationCollection
         });
     }
 
-    private function addToBuyAggregate(Operation $operation): void
+    /**
+     * aggregateBuyOperations
+     *
+     * @param  mixed $operations
+     * @return array
+     */
+    private function aggregateBuyOperations(array $operations): array
     {
-        if ($operation->operation != OperationType::fromString(OperationType::BUY_OPERATION)) {
-            return;
+        $aggregateBuyOperations = [];
+
+        foreach ($operations as $operation) {
+            $item = array_search($operation->unitCost->toFloat(), array_column($aggregateBuyOperations, 'price'));
+
+            if ($item === false) {
+                $aggregateBuyOperations[] = [
+                    'price' => $operation->unitCost->toFloat(),
+                    'quantity' => $operation->quantity->toInt()
+                ];
+                continue;
+            }
+
+            $aggregateBuyOperations[$item]['quantity'] += $operation->quantity->toInt();
         }
 
-        $item = array_search($operation->unitCost->toFloat(), array_column($this->aggregateBuyOperations, 'price'));
-
-        if ($item === false) {
-            $this->aggregateBuyOperations[] = [
-                'price' => $operation->unitCost->toFloat(),
-                'quantity' => $operation->quantity->toInt()
-            ];
-            return;
-        }
-
-        $this->aggregateBuyOperations[$item]['quantity'] += $operation->quantity->toInt();
+        return $aggregateBuyOperations;
     }
 
-    public function getAvgPrice()
+    /**
+     * getAvgPrice
+     *
+     * @return float
+     */
+    public function getAvgPrice(): float
+    {
+        $buyOperations = $this->aggregateBuyOperations(
+            $this->getOperationsByType(OperationType::fromString(OperationType::BUY_OPERATION))
+        );
+
+        $totalPrice = $this->calcAggregateItemTotalPrice($buyOperations);
+
+        $calculatedBuyAggregate = $this->calcAggregate($totalPrice['items']);
+
+        return $calculatedBuyAggregate / $totalPrice['total'];
+    }
+
+
+    /**
+     * calcAggregate
+     *
+     * @param  mixed $calcAggregateItemTotalPrice
+     * @return float
+     */
+    private function calcAggregate(array $calcAggregateItemTotalPrice): float
+    {
+        return array_reduce(
+            $calcAggregateItemTotalPrice,
+            function ($aggregateSum, $item) {
+                return $aggregateSum += $item;
+            },
+            0
+        );
+    }
+
+
+    /**
+     * calcAggregateItemTotalPrice
+     *
+     * @param  mixed $operations
+     * @return array
+     */
+    private function calcAggregateItemTotalPrice(array $operations): array
     {
         $total = 0;
 
         $calcTotalPrice = array_map(function ($operation) use (&$total) {
             $total += $operation['quantity'];
             return $operation['price'] * $operation['quantity'];
-        }, $this->aggregateBuyOperations);
+        }, $operations);
 
-        $calculatedBuyAggregate = array_reduce($calcTotalPrice,
-            function ($aggregateSum, $item) {
-                return $aggregateSum += $item;
-            },
-            0
-        );
-
-        return $calculatedBuyAggregate / $total;
+        return [
+            'items' => $calcTotalPrice,
+            'total' => $total
+        ];
     }
 
-    public function toArray()
+
+    /**
+     * toArray
+     *
+     * @return array
+     */
+    public function toArray(): array
     {
         return array_map(function (Operation $operation) {
             return $operation->toArray();

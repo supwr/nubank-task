@@ -31,12 +31,13 @@ class OperationTaxCalculator
             }
 
             $o = OperationCollectionFactory::fromArray($operationCollection);
-            $operations[] = $o;
+            // $operations[] = $o;
+            $this->taxCalculator->calculate($o);
         }
 
-        foreach ($operations as $operation) {
-            fwrite(STDOUT, json_encode($operation->getAvgPrice()) . PHP_EOL);
-        }
+        // foreach ($operations as $operation) {
+        //     fwrite(STDOUT, json_encode($operation->getAvgPrice()) . PHP_EOL);
+        // }
         // fwrite(STDOUT, json_encode($operations) . PHP_EOL);
     }
 }
