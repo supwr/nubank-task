@@ -10,8 +10,16 @@ use App\Infrastructure\DTO\OperationResultCollectionDTO;
 use App\Domain\Entity\Operation\OperationResult;
 use App\Domain\ValueObject\Tax;
 
+/**
+ * OperationResultCollectionDTOTest
+ */
 class OperationResultCollectionDTOTest extends TestCase
 {
+    /**
+     * testOperationResultCollectionDTOToArray
+     *
+     * @return void
+     */
     public function testOperationResultCollectionDTOToArray(): void
     {
         $collection = [

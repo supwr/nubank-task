@@ -10,7 +10,7 @@ To run the app
 
 ```$ make run-app```
 
-You will be prompted by the application to input the application collection in json format:
+You will be prompted by the application to input an operation collection in json format:
 
 ![Image](run-app.png?raw=true)
 

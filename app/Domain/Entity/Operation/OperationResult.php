@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Domain\Entity\Operation;
 
 use App\Domain\ValueObject\Tax;
-use App\Domain\ValueObject\OperationOutcome;
 
 /**
  * OperationResult
