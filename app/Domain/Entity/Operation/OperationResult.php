@@ -19,7 +19,7 @@ final class OperationResult
     {
         return [
             'value' => $this->value->toFloat(),
-            'accumulated_loss' => $this->accumulatedLoss
+            'debt' => $this->debt
         ];
     }
 }

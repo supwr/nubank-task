@@ -6,6 +6,7 @@ namespace App\Application\Command;
 
 use App\Domain\Service\CalculateOperationTax;
 use App\Domain\Entity\Operation\OperationCollection;
+use App\Domain\Entity\Operation\OperationResultCollection;
 
 class CalculateOperationCollectionTax
 {
@@ -13,24 +14,22 @@ class CalculateOperationCollectionTax
     {
     }
 
-    public function calculate(OperationCollection $operationCollection)
+    public function calculate(OperationCollection $operationCollection): OperationResultCollection
     {
-        $taxResult = null;
-        $result = [];
+        $taxResult = null;    
+        $operationResultCollection = new OperationResultCollection();
+
         foreach ($operationCollection->get() as $operation) {
             $operationTax = new CalculateOperationTax(
                 $operation,
                 $taxResult,
                 $operationCollection->getAvgPrice()
             );
+            
             $taxResult = $operationTax->getTaxes();
-            $result[] = [
-                'tax' => $taxResult->value->toFloat()
-            ];
+            $operationResultCollection->add($taxResult);
         }
 
-        fwrite(STDOUT, json_encode($result) . PHP_EOL);
-
-        // return $this->taxCalculator->calculate();
+        return $operationResultCollection;
     }
 }

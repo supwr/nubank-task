@@ -9,6 +9,7 @@ use App\Domain\ValueObject\OperationType;
 use App\Infrastructure\Validator\OperationCollectionValidator;
 use App\Infrastructure\Shared\Helper\JsonInputHelper;
 use App\Application\Command\CalculateOperationCollectionTax;
+use App\Infrastructure\DTO\OperationResultCollectionDTO;
 
 class OperationTaxCalculator
 {
@@ -18,7 +19,7 @@ class OperationTaxCalculator
 
     public function run()
     {
-        $operations = [];
+        $taxResults = [];
 
         while (!empty($input = readline("Enter your operation list: "))) {
             $operationCollection = JsonInputHelper::parseJson($input);
@@ -31,13 +32,14 @@ class OperationTaxCalculator
             }
 
             $o = OperationCollectionFactory::fromArray($operationCollection);
-            // $operations[] = $o;
-            $this->taxCalculator->calculate($o);
+            $calculatedTaxes = $this->taxCalculator->calculate($o)->toArray();
+
+            $taxesDTO =  new OperationResultCollectionDTO($calculatedTaxes);
+            $taxResults[] = $taxesDTO->toArray();
         }
 
-        // foreach ($operations as $operation) {
-        //     fwrite(STDOUT, json_encode($operation->getAvgPrice()) . PHP_EOL);
-        // }
-        // fwrite(STDOUT, json_encode($operations) . PHP_EOL);
+        foreach ($taxResults as $tax) {
+            fwrite(STDOUT, json_encode($tax) . PHP_EOL);
+        }
     }
 }

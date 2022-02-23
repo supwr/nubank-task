@@ -41,4 +41,11 @@ final class OperationResultCollection
     {
         return $this->operationResults;
     }
+
+    public function toArray(): array
+    {
+        return array_map(function (OperationResult $operationResult) {
+            return $operationResult->toArray();
+        }, $this->operationResults);
+    }
 }
