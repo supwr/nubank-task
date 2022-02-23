@@ -14,15 +14,6 @@ use App\Domain\Entity\Operation\OperationResultCollection;
 class CalculateOperationCollectionTax
 {
     /**
-     * __construct
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-    }
-
-    /**
      * calculate
      *
      * @param  mixed $operationCollection
