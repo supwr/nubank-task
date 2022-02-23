@@ -12,7 +12,7 @@ To run the app
 
 You will be prompted by the application to input the application collection in json format:
 
-[!Image](run-app.png?raw=true)
+![Image](run-app.png?raw=true)
 
 ```
 [{"operation":"buy", "unit-cost":10, "quantity": 100},{"operation":"sell", "unit-cost":15, "quantity": 50},{"operation":"sell", "unit-cost":15, "quantity": 50}]
