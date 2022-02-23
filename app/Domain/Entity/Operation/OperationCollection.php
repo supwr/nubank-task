@@ -7,6 +7,9 @@ namespace App\Domain\Entity\Operation;
 use App\Domain\Entity\Operation\Operation;
 use App\Domain\ValueObject\OperationType;
 
+/**
+ * OperationCollection
+ */
 final class OperationCollection
 {
     private array $operations;

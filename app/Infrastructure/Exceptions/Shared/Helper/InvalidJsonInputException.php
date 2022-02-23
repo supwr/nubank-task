@@ -6,6 +6,9 @@ namespace App\Infrastructure\Exceptions\Shared\Helper;
 
 use Exception;
 
+/**
+ * InvalidJsonInputException
+ */
 class InvalidJsonInputException extends Exception
 {
 }

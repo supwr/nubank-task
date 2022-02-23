@@ -11,12 +11,26 @@ use App\Infrastructure\Shared\Helper\JsonInputHelper;
 use App\Application\Command\CalculateOperationCollectionTax;
 use App\Infrastructure\DTO\OperationResultCollectionDTO;
 
+/**
+ * OperationTaxCalculator
+ */
 class OperationTaxCalculator
 {
+    /**
+     * __construct
+     *
+     * @param  mixed $taxCalculator
+     * @return void
+     */
     public function __construct(private CalculateOperationCollectionTax $taxCalculator)
     {
     }
 
+    /**
+     * run
+     *
+     * @return void
+     */
     public function run()
     {
         $taxResults = [];

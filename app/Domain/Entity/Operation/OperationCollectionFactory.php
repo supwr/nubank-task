@@ -8,8 +8,17 @@ use App\Domain\ValueObject\OperationType;
 use App\Domain\ValueObject\UnitCost;
 use App\Domain\ValueObject\Quantity;
 
+/**
+ * OperationCollectionFactory
+ */
 class OperationCollectionFactory
 {
+    /**
+     * fromArray
+     *
+     * @param  mixed $data
+     * @return OperationCollection
+     */
     public static function fromArray(array $data): OperationCollection
     {
         $collection = new OperationCollection();

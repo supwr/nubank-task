@@ -6,8 +6,17 @@ namespace App\Infrastructure\Shared\Helper;
 
 use App\Infrastructure\Exceptions\Shared\Helper\InvalidJsonInputException;
 
+/**
+ * JsonInputHelper
+ */
 class JsonInputHelper
 {
+    /**
+     * parseJson
+     *
+     * @param  mixed $jsonData
+     * @return array
+     */
     public static function parseJson(string $jsonData): array
     {
         $decodedData = json_decode(
