@@ -13,24 +13,47 @@ use App\Domain\ValueObject\OperationType;
 final class OperationCollection
 {
     private array $operations;
-
+    
+    /**
+     * __construct
+     *
+     * @return void
+     */
     public function __construct()
     {
         $this->operations = [];
         $this->aggregateBuyOperations = [];
     }
-
+    
+    /**
+     * add
+     *
+     * @param  mixed $operation
+     * @return bool
+     */
     public function add(Operation $operation): bool
     {
         $this->operations[] = $operation;
         return true;
     }
-
+    
+    /**
+     * has
+     *
+     * @param  mixed $operation
+     * @return bool
+     */
     public function has(Operation $operation): bool
     {
         return in_array($operation, $this->operations);
     }
-
+    
+    /**
+     * remove
+     *
+     * @param  mixed $operation
+     * @return bool
+     */
     public function remove(Operation $operation): bool
     {
         if (!$this->has($operation)) {
@@ -41,7 +64,12 @@ final class OperationCollection
         unset($this->operations[$key]);
         return true;
     }
-
+    
+    /**
+     * get
+     *
+     * @return array
+     */
     public function get(): array
     {
         return $this->operations;
