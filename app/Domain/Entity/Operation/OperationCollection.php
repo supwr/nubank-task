@@ -13,7 +13,7 @@ use App\Domain\ValueObject\OperationType;
 final class OperationCollection
 {
     private array $operations;
-    
+
     /**
      * __construct
      *
@@ -24,7 +24,7 @@ final class OperationCollection
         $this->operations = [];
         $this->aggregateBuyOperations = [];
     }
-    
+
     /**
      * add
      *
@@ -36,7 +36,7 @@ final class OperationCollection
         $this->operations[] = $operation;
         return true;
     }
-    
+
     /**
      * has
      *
@@ -47,7 +47,7 @@ final class OperationCollection
     {
         return in_array($operation, $this->operations);
     }
-    
+
     /**
      * remove
      *
@@ -64,7 +64,7 @@ final class OperationCollection
         unset($this->operations[$key]);
         return true;
     }
-    
+
     /**
      * get
      *
