@@ -12,7 +12,7 @@ use App\Infrastructure\Exceptions\Shared\Helper\InvalidJsonInputException;
  * JsonInputHelperTest
  */
 class JsonInputHelperTest extends TestCase
-{    
+{
     /**
      * testParseValidJson
      *
@@ -26,7 +26,7 @@ class JsonInputHelperTest extends TestCase
         $this->assertIsArray($parsedData);
         $this->assertCount(3, $parsedData);
     }
-    
+
     /**
      * testParseInvalidJson
      *

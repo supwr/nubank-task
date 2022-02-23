@@ -15,7 +15,7 @@ use App\Domain\ValueObject\Tax;
  * OperationResultCollectionTest
  */
 class OperationResultCollectionTest extends TestCase
-{        
+{
     /**
      * testValidOperationResultCollection
      *
@@ -46,7 +46,7 @@ class OperationResultCollectionTest extends TestCase
 
         $this->assertCount(1, $collection->get());
         $this->assertTrue($collection->has($firstOperationResult));
-        $this->assertEquals($expectedCollectionAsArray, $collection->toArray());  
-        $this->assertFalse($collection->remove($secondOperation));      
+        $this->assertEquals($expectedCollectionAsArray, $collection->toArray());
+        $this->assertFalse($collection->remove($secondOperation));
     }
 }

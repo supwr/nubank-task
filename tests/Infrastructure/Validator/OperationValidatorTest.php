@@ -11,7 +11,7 @@ use App\Infrastructure\Validator\OperationValidator;
  * OperationValidatorTest
  */
 class OperationValidatorTest extends TestCase
-{        
+{
     /**
      * testValidOperationInput
      *
@@ -20,11 +20,11 @@ class OperationValidatorTest extends TestCase
     public function testValidOperationInput(): void
     {
         $validInput = ['operation' => 'buy', 'unit-cost' => 10, 'quantity' => 100];
-        $validator = new OperationValidator($validInput);        
+        $validator = new OperationValidator($validInput);
 
         $this->assertFalse($validator->hasErrors());
     }
-    
+
     /**
      * testInvalidOperationInput
      *
@@ -33,7 +33,7 @@ class OperationValidatorTest extends TestCase
     public function testInvalidOperationInput(): void
     {
         $validInput = ['unit-cost' => 10, 'quantity' => 100];
-        $validator = new OperationValidator($validInput);        
+        $validator = new OperationValidator($validInput);
 
         $this->assertTrue($validator->hasErrors());
         $this->assertNotEmpty($validator->getErrors());

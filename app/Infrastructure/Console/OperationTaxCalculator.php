@@ -10,6 +10,10 @@ use App\Infrastructure\Validator\OperationCollectionValidator;
 use App\Infrastructure\Shared\Helper\JsonInputHelper;
 use App\Application\Command\CalculateOperationCollectionTax;
 use App\Infrastructure\DTO\OperationResultCollectionDTO;
+use App\Infrastructure\Shared\Stream\{
+    InputStreamInterface,
+    OutputStreamInterface
+};
 
 /**
  * OperationTaxCalculator
@@ -19,11 +23,13 @@ class OperationTaxCalculator
     /**
      * __construct
      *
-     * @param  mixed $taxCalculator
      * @return void
      */
-    public function __construct(private CalculateOperationCollectionTax $taxCalculator)
-    {
+    public function __construct(
+        private CalculateOperationCollectionTax $taxCalculator,
+        private InputStreamInterface $inputStream,
+        private OutputStreamInterface $outputStream
+    ) {
     }
 
     /**
@@ -35,13 +41,19 @@ class OperationTaxCalculator
     {
         $taxResults = [];
 
-        while (!empty($input = readline("Enter your operation list: "))) {
+        while (true) {
+            $input = $this->inputStream->prompt("Enter your operation list: ");
+
+            if (empty($input)) {
+                break;
+            }
+
             $operationCollection = JsonInputHelper::parseJson($input);
 
             $validator = new OperationCollectionValidator($operationCollection);
 
             if ($validator->hasErrors()) {
-                fwrite(STDOUT, 'This collection structure is incorrect' . PHP_EOL);
+                $this->outputStream->output('This collection structure is incorrect');
                 exit();
             }
 
@@ -53,7 +65,7 @@ class OperationTaxCalculator
         }
 
         foreach ($taxResults as $tax) {
-            fwrite(STDOUT, json_encode($tax) . PHP_EOL);
+            $this->outputStream->output(json_encode($tax));
         }
     }
 }

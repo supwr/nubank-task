@@ -11,7 +11,7 @@ use App\Infrastructure\Validator\OperationCollectionValidator;
  * OperationCollectionValidatorTest
  */
 class OperationCollectionValidatorTest extends TestCase
-{                
+{
     /**
      * testValidOperationCollectionInput
      *
@@ -22,11 +22,11 @@ class OperationCollectionValidatorTest extends TestCase
         $validInput = [
             ['operation' => 'buy', 'unit-cost' => 10, 'quantity' => 100]
         ];
-        $validator = new OperationCollectionValidator($validInput);        
+        $validator = new OperationCollectionValidator($validInput);
 
         $this->assertFalse($validator->hasErrors());
     }
-        
+
     /**
      * testInvalidOperationCollectionInput
      *
@@ -39,7 +39,7 @@ class OperationCollectionValidatorTest extends TestCase
             ['unit-cost' => 10, 'quantity' => 100],
             ['operation' => 'sell', 'unit-cost' => 30, 'quantity' => 10]
         ];
-        $validator = new OperationCollectionValidator($validInput);        
+        $validator = new OperationCollectionValidator($validInput);
 
         $this->assertTrue($validator->hasErrors());
         $this->assertCount(2, $validator->getErrors());
