@@ -12,7 +12,7 @@ To run the app
 
 You will be prompted by the application to input an operation collection in json format:
 
-![Image](run-app.png?raw=true)
+![Image](img/run-app.png?raw=true)
 
 ```
 [{"operation":"buy", "unit-cost":10, "quantity": 100},{"operation":"sell", "unit-cost":15, "quantity": 50},{"operation":"sell", "unit-cost":15, "quantity": 50}]
@@ -28,7 +28,7 @@ To run the tests
 
 This project has code coverage of 100%
 
-![Image](code-coverage.png?raw=true)
+![Image](img/code-coverage.png?raw=true)
 
 ### Mutation tests
 
@@ -38,4 +38,4 @@ To run the mutation tests
 
 This project uses the library `infection-php` to assess its mutation score
 
-![Image](mutation-score.png?raw=true)
+![Image](img/mutation-score.png?raw=true)
