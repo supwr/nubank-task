@@ -15,11 +15,11 @@ use App\Domain\Exceptions\ValueObject\Tax\InvalidTaxException;
 class OperationResultTest extends TestCase
 {
     /**
-     * testValidOperationResult
+     * testValidOperationResultWithLoss
      *
      * @return void
      */
-    public function testValidOperationResult(): void
+    public function testValidOperationResultWithLoss(): void
     {
         $operationResult = new OperationResult(
             Tax::fromFloat(100),
@@ -28,6 +28,20 @@ class OperationResultTest extends TestCase
 
         $this->assertInstanceOf(OperationResult::class, $operationResult);
         $this->assertInstanceOf(Tax::class, $operationResult->value);
+        $this->assertEquals(10, $operationResult->debt);
+        $this->assertEquals(100, $operationResult->value->toFloat());
+    }
+
+    public function testValidOperationResultWithout(): void
+    {
+        $operationResult = new OperationResult(
+            Tax::fromFloat(100)
+        );
+
+        $this->assertInstanceOf(OperationResult::class, $operationResult);
+        $this->assertInstanceOf(Tax::class, $operationResult->value);
+        $this->assertEquals(0, $operationResult->debt);
+        $this->assertEquals(100, $operationResult->value->toFloat());
     }
 
     /**

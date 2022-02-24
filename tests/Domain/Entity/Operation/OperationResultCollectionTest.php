@@ -40,10 +40,9 @@ class OperationResultCollectionTest extends TestCase
             ]
         ];
 
-        $collection->add($firstOperationResult);
-        $collection->add($secondOperation);
-        $collection->remove($secondOperation);
-
+        $this->assertTrue($collection->add($firstOperationResult));
+        $this->assertTrue($collection->add($secondOperation));
+        $this->assertTrue($collection->remove($secondOperation));
         $this->assertCount(1, $collection->get());
         $this->assertTrue($collection->has($firstOperationResult));
         $this->assertEquals($expectedCollectionAsArray, $collection->toArray());

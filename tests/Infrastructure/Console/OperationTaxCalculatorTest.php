@@ -48,7 +48,9 @@ class OperationTaxCalculatorTest extends TestCase
         $mockOutputStream = Mockery::mock(OutputStream::class, function (Mockery\MockInterface $mock) {
             $mock->shouldReceive('output')
                 ->once()
-                ->with('[{"tax":10},{"tax":0}]');
+                ->withArgs(function ($arg) {
+                    return $arg == '[{"tax":10},{"tax":0}]';
+                });
         });
 
         $calculator = new OperationTaxCalculator(
@@ -105,5 +107,11 @@ class OperationTaxCalculatorTest extends TestCase
         $collection->add(new OperationResult(Tax::fromFloat(0), 300));
 
         return $collection;
+    }
+
+    public function tearDown(): void
+    {
+        parent::tearDown();
+        Mockery::close();
     }
 }

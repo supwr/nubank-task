@@ -41,11 +41,11 @@ class CalculateOperationTaxTest extends TestCase
     }
 
     /**
-     * testSuccessfulBuyOperationWithPreviousTaxCalc
+     * testSuccessfulSellOperationWithPreviousTaxCalc
      *
      * @return void
      */
-    public function testSuccessfulBuyOperationWithPreviousTaxCalc()
+    public function testSuccessfulSellOperationWithPreviousTaxCalc()
     {
         $previousOperationResult = new OperationResult(
             Tax::fromFloat(0),
@@ -68,11 +68,33 @@ class CalculateOperationTaxTest extends TestCase
     }
 
     /**
-     * testSuccessfulBuyOperationWithPreviousTaxCalcAndLoss
+     * testSuccessfulSellOperationWithoutPreviousTaxCalcAndLoss
      *
      * @return void
      */
-    public function testSuccessfulBuyOperationWithPreviousTaxCalcAndLoss()
+    public function testSuccessfulSellOperationWithoutPreviousTaxCalcAndLoss()
+    {
+        $avgCost = 20;
+        $operation = new Operation(
+            OperationType::fromString(OperationType::SELL_OPERATION),
+            UnitCost::fromFloat(10),
+            Quantity::fromInt(50)
+        );
+
+        $calculator = new CalculateOperationTax($operation, null, $avgCost);
+        $result = $calculator->getTaxes();
+
+        $this->assertNotEmpty($result->toArray());
+        $this->assertEquals(0, $result->value->toFloat());
+        $this->assertEquals(500, $result->debt);
+    }
+
+    /**
+     * testSuccessfulSellOperationWithPreviousTaxCalcAndLoss
+     *
+     * @return void
+     */
+    public function testSuccessfulSellOperationWithPreviousTaxCalcAndLoss()
     {
         $previousOperationResult = new OperationResult(
             Tax::fromFloat(0),
@@ -95,11 +117,11 @@ class CalculateOperationTaxTest extends TestCase
     }
 
     /**
-     * testSuccessfulBuyOperationWithPreviousTaxCalcAndProfit
+     * testSuccessfulSellOperationWithPreviousTaxCalcAndProfit
      *
      * @return void
      */
-    public function testSuccessfulBuyOperationWithPreviousTaxCalcAndProfit()
+    public function testSuccessfulSellOperationWithPreviousTaxCalcAndProfit()
     {
         $previousOperationResult = new OperationResult(
             Tax::fromFloat(0),
@@ -122,11 +144,33 @@ class CalculateOperationTaxTest extends TestCase
     }
 
     /**
-     * testSuccessfulBuyOperationWithPreviousTaxCalcNoProfitOrLoss
+     * testSuccessfulSellOperationWithNoPreviousTaxCalcAnd20000Taxable
      *
      * @return void
      */
-    public function testSuccessfulBuyOperationWithPreviousTaxCalcNoProfitOrLoss()
+    public function testSuccessfulSellOperationWithNoPreviousTaxCalcAnd20000Taxable()
+    {
+        $avgCost = 2;
+        $operation = new Operation(
+            OperationType::fromString(OperationType::SELL_OPERATION),
+            UnitCost::fromFloat(4),
+            Quantity::fromInt(5000)
+        );
+
+        $calculator = new CalculateOperationTax($operation, null, $avgCost);
+        $result = $calculator->getTaxes();
+
+        $this->assertNotEmpty($result->toArray());
+        $this->assertEquals(2000, $result->value->toFloat());
+        $this->assertEquals(0, $result->debt);
+    }
+
+    /**
+     * testSuccessfulSellOperationWithPreviousTaxCalcNoProfitOrLoss
+     *
+     * @return void
+     */
+    public function testSuccessfulSellOperationWithPreviousTaxCalcNoProfitOrLoss()
     {
         $previousOperationResult = new OperationResult(
             Tax::fromFloat(0),
@@ -149,11 +193,11 @@ class CalculateOperationTaxTest extends TestCase
     }
 
     /**
-     * testSuccessfulBuyOperationWithPreviousTaxCalcAndProfitAndPreviousLoss
+     * testSuccessfulSellOperationWithPreviousTaxCalcAndProfitAndPreviousLoss
      *
      * @return void
      */
-    public function testSuccessfulBuyOperationWithPreviousTaxCalcAndProfitAndPreviousLoss()
+    public function testSuccessfulSellOperationWithPreviousTaxCalcAndProfitAndPreviousLoss()
     {
         $previousOperationResult = new OperationResult(
             Tax::fromFloat(0),
@@ -175,7 +219,12 @@ class CalculateOperationTaxTest extends TestCase
         $this->assertEquals(0, $result->debt);
     }
 
-    public function testSuccessfulBuyOperationWithPreviousTaxCalcAndNoProfitAndPreviousLoss()
+    /**
+     * testSuccessfulSellOperationWithPreviousTaxCalcAndNoProfitAndPreviousLoss
+     *
+     * @return void
+     */
+    public function testSuccessfulSellOperationWithPreviousTaxCalcAndNoProfitAndPreviousLoss()
     {
         $previousOperationResult = new OperationResult(
             Tax::fromFloat(0),
@@ -195,5 +244,81 @@ class CalculateOperationTaxTest extends TestCase
         $this->assertNotEmpty($result->toArray());
         $this->assertEquals(0, $result->value->toFloat());
         $this->assertEquals(0, $result->debt);
+    }
+
+    /**
+     * testSuccessfulSellOperationWithNoPreviousTaxCalcAnd20000OperationalCost
+     *
+     * @return void
+     */
+    public function testSuccessfulSellOperationWithNoPreviousTaxCalcAnd20000OperationalCost()
+    {
+        $avgCost = 20;
+        $operation = new Operation(
+            OperationType::fromString(OperationType::SELL_OPERATION),
+            UnitCost::fromFloat(20),
+            Quantity::fromInt(1000)
+        );
+
+        $calculator = new CalculateOperationTax($operation, null, $avgCost);
+        $result = $calculator->getTaxes();
+
+        $this->assertNotEmpty($result->toArray());
+        $this->assertEquals(0, $result->value->toFloat());
+        $this->assertEquals(0, $result->debt);
+    }
+
+    /**
+     * testSuccessfulSellOperationWithPreviousTaxCalcAndDebt
+     *
+     * @return void
+     */
+    public function testSuccessfulSellOperationWithPreviousTaxCalcAndDebt()
+    {
+        $previousOperationResult = new OperationResult(
+            Tax::fromFloat(0),
+            20000
+        );
+
+        $avgCost = 20;
+        $operation = new Operation(
+            OperationType::fromString(OperationType::SELL_OPERATION),
+            UnitCost::fromFloat(40),
+            Quantity::fromInt(1000)
+        );
+
+        $calculator = new CalculateOperationTax($operation, $previousOperationResult, $avgCost);
+        $result = $calculator->getTaxes();
+
+        $this->assertNotEmpty($result->toArray());
+        $this->assertEquals(0, $result->value->toFloat());
+        $this->assertEquals(0, $result->debt);
+    }
+
+    /**
+     * testSuccessfulSellOperationWithPreviousTaxCalcAndGreaterDebt
+     *
+     * @return void
+     */
+    public function testSuccessfulSellOperationWithPreviousTaxCalcAndGreaterDebt()
+    {
+        $previousOperationResult = new OperationResult(
+            Tax::fromFloat(0),
+            30000
+        );
+
+        $avgCost = 20;
+        $operation = new Operation(
+            OperationType::fromString(OperationType::SELL_OPERATION),
+            UnitCost::fromFloat(40),
+            Quantity::fromInt(1000)
+        );
+
+        $calculator = new CalculateOperationTax($operation, $previousOperationResult, $avgCost);
+        $result = $calculator->getTaxes();
+
+        $this->assertNotEmpty($result->toArray());
+        $this->assertEquals(0, $result->value->toFloat());
+        $this->assertEquals(10000, $result->debt);
     }
 }
