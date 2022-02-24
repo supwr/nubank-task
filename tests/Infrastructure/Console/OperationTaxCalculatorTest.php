@@ -23,6 +23,11 @@ use Mockery;
  */
 class OperationTaxCalculatorTest extends TestCase
 {
+    /**
+     * testSuccessfulRun
+     *
+     * @return void
+     */
     public function testSuccessfulRun(): void
     {
         $calculateOperationCollectionTax = Mockery::mock(CalculateOperationCollectionTax::class, function (Mockery\MockInterface $mock) {
@@ -34,7 +39,10 @@ class OperationTaxCalculatorTest extends TestCase
         $mockInputStream = Mockery::mock(InputStream::class, function (Mockery\MockInterface $mock) {
             $mock->shouldReceive('prompt')
                 ->twice()
-                ->andReturn('[{"operation":"buy", "unit-cost":10, "quantity": 100},{"operation":"sell", "unit-cost":15, "quantity": 50},{"operation":"sell", "unit-cost":15, "quantity": 50}]', '');
+                ->andReturn(
+                    '[{"operation":"buy", "unit-cost":10, "quantity": 100},{"operation":"sell", "unit-cost":15, "quantity": 50},{"operation":"sell", "unit-cost":15, "quantity": 50}]',
+                    ''
+                );
         });
 
         $mockOutputStream = Mockery::mock(OutputStream::class, function (Mockery\MockInterface $mock) {
@@ -52,20 +60,49 @@ class OperationTaxCalculatorTest extends TestCase
         $this->assertEmpty($calculator->run());
     }
 
-    private function mockOperationResultCollection()
+    /**
+     * testExceptionRun
+     *
+     * @return void
+     */
+    public function testExceptionRun(): void
     {
-        $collection = new OperationResultCollection();
-        $firstOperationResult = new OperationResult(
-            Tax::fromFloat(10),
-            0
-        );
-        $secondOperation = new OperationResult(
-            Tax::fromFloat(0),
-            300
+        $calculateOperationCollectionTax = Mockery::mock(CalculateOperationCollectionTax::class);
+
+        $mockInputStream = Mockery::mock(InputStream::class, function (Mockery\MockInterface $mock) {
+            $mock->shouldReceive('prompt')
+                ->once()
+                ->andReturn(
+                    '[{"unit-cost":10, "quantity": 100},{"operation":"sell", "unit-cost":15, "quantity": 50},{"operation":"sell"}]'
+                );
+        });
+
+        $mockOutputStream = Mockery::mock(OutputStream::class, function (Mockery\MockInterface $mock) {
+            $mock->shouldReceive('output')
+                ->once()
+                ->with('This collection structure is incorrect');
+        });
+
+        $calculator = new OperationTaxCalculator(
+            $calculateOperationCollectionTax,
+            $mockInputStream,
+            $mockOutputStream
         );
 
-        $collection->add($firstOperationResult);
-        $collection->add($secondOperation);
+        $this->assertEmpty($calculator->run());
+    }
+
+    /**
+     * mockOperationResultCollection
+     *
+     * @return OperationResultCollection
+     */
+    private function mockOperationResultCollection(): OperationResultCollection
+    {
+        $collection = new OperationResultCollection();
+
+        $collection->add(new OperationResult(Tax::fromFloat(10), 0));
+        $collection->add(new OperationResult(Tax::fromFloat(0), 300));
 
         return $collection;
     }

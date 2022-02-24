@@ -37,7 +37,7 @@ class OperationTaxCalculator
      *
      * @return void
      */
-    public function run()
+    public function run(): void
     {
         $taxResults = [];
 
@@ -52,16 +52,18 @@ class OperationTaxCalculator
 
             $validator = new OperationCollectionValidator($operationCollection);
 
-            if ($validator->hasErrors()) {
-                $this->outputStream->output('This collection structure is incorrect');
-                exit();
-            }
+            if ($validator->hasErrors()) break;
 
             $o = OperationCollectionFactory::fromArray($operationCollection);
             $calculatedTaxes = $this->taxCalculator->calculate($o)->toArray();
 
             $taxesDTO =  new OperationResultCollectionDTO($calculatedTaxes);
             $taxResults[] = $taxesDTO->toArray();
+        }
+
+        if ($validator->hasErrors()) {
+            $this->outputStream->output('This collection structure is incorrect');
+            return;
         }
 
         foreach ($taxResults as $tax) {

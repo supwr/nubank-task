@@ -10,7 +10,7 @@ class InputStream implements InputStreamInterface
     {
     }
 
-    public function prompt(string $prompt): string
+    public function prompt(string $prompt): string|bool
     {
         fwrite($this->stream, $prompt);
         return stream_get_line($this->stream, self::MAX_LINE_LENGTH, PHP_EOL);

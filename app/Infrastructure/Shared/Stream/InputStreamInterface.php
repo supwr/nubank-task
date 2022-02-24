@@ -8,5 +8,5 @@ interface InputStreamInterface
 {
     public const MAX_LINE_LENGTH = 1024;
 
-    public function prompt(string $prompt): string;
+    public function prompt(string $prompt): string|bool;
 }
