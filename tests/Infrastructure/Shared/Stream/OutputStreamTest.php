@@ -11,8 +11,13 @@ class OutputStreamTest extends TestCase
 {
     public function testOutputStream()
     {
-        $outputStream = new OutputStream(fopen("php://memory", "rw"));
+        $expectedOutput = 'Wow, such stream';
+        $stream = fopen("php://memory", "rw");
+        $outputStream = new OutputStream($stream);
 
-        $this->assertNull($outputStream->output(''));
+        $this->assertNull($outputStream->output($expectedOutput));
+
+        rewind($stream);
+        $this->assertEquals($expectedOutput, stream_get_line($stream, 1024, PHP_EOL));
     }
 }

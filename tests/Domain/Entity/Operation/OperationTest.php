@@ -58,13 +58,29 @@ class OperationTest extends TestCase
      *
      * @return void
      */
-    public function testOperationWithInvalidUnitCostException(): void
+    public function testOperationWithInvalidNegativeUnitCostException(): void
     {
         $this->expectException(InvalidUnitCostException::class);
 
         $operation = new Operation(
             OperationType::fromString(OperationType::BUY_OPERATION),
             UnitCost::fromFloat(-10),
+            Quantity::fromInt(1)
+        );
+    }
+
+    /**
+     * testOperationWithInvalidZeroUnitCostException
+     *
+     * @return void
+     */
+    public function testOperationWithInvalidZeroUnitCostException(): void
+    {
+        $this->expectException(InvalidUnitCostException::class);
+
+        $operation = new Operation(
+            OperationType::fromString(OperationType::BUY_OPERATION),
+            UnitCost::fromFloat(0),
             Quantity::fromInt(1)
         );
     }

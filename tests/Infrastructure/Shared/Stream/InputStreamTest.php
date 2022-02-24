@@ -21,8 +21,12 @@ class InputStreamTest extends TestCase
     {
         $expectedUserInput = 'User input rules!';
 
-        $inputStream = new InputStream(MemoryStream::setMemoryStream($expectedUserInput));
+        $stream = fopen("php://memory", "rw");
 
-        $this->assertEquals($expectedUserInput, $inputStream->prompt(''));
+        $inputStream = new InputStream($stream);
+        $inputStream->prompt($expectedUserInput);
+        rewind($stream);
+
+        $this->assertEquals($expectedUserInput, stream_get_line($stream, 1024, PHP_EOL));
     }
 }
