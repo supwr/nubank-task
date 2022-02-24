@@ -12,6 +12,6 @@ class OutputStream implements OutputStreamInterface
 
     public function output(string $output): void
     {
-        fwrite($this->stream, $output . PHP_EOL);
+        fwrite($this->stream, sprintf("%s%s", $output, PHP_EOL));
     }
 }

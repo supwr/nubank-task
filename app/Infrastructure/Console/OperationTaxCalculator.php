@@ -15,6 +15,7 @@ use App\Infrastructure\Shared\Stream\{
     OutputStreamInterface
 };
 use Throwable;
+use Exception;
 
 /**
  * OperationTaxCalculator
@@ -66,8 +67,7 @@ class OperationTaxCalculator
             }
 
             if ($validator->hasErrors()) {
-                $this->outputStream->output('This collection structure is incorrect');
-                return;
+                throw new Exception('This collection structure is incorrect');
             }
 
             foreach ($taxResults as $tax) {

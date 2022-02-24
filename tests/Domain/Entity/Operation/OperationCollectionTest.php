@@ -28,12 +28,28 @@ class OperationCollectionTest extends TestCase
     public function testValidOperationCollection(): void
     {
         $collection = new OperationCollection();
-        $buyOperation = new Operation(
+
+        $buyOperationA = new Operation(
             OperationType::fromString(OperationType::BUY_OPERATION),
             UnitCost::fromFloat(10),
-            Quantity::fromInt(1)
+            Quantity::fromInt(10000)
         );
-        $sellOperation = new Operation(
+        $buyOperationB = new Operation(
+            OperationType::fromString(OperationType::BUY_OPERATION),
+            UnitCost::fromFloat(10),
+            Quantity::fromInt(5000)
+        );
+        $buyOperationC = new Operation(
+            OperationType::fromString(OperationType::BUY_OPERATION),
+            UnitCost::fromFloat(25),
+            Quantity::fromInt(5000)
+        );
+        $sellOperationA = new Operation(
+            OperationType::fromString(OperationType::SELL_OPERATION),
+            UnitCost::fromFloat(15),
+            Quantity::fromInt(10000)
+        );
+        $sellOperationB = new Operation(
             OperationType::fromString(OperationType::SELL_OPERATION),
             UnitCost::fromFloat(10),
             Quantity::fromInt(1)
@@ -43,18 +59,35 @@ class OperationCollectionTest extends TestCase
             [
                 'operation' => 'buy',
                 'unit-cost' => 10,
-                'quantity' => 1
+                'quantity' => 10000
+            ],
+            [
+                'operation' => 'buy',
+                'unit-cost' => 10,
+                'quantity' => 5000
+            ],
+            [
+                'operation' => 'buy',
+                'unit-cost' => 25,
+                'quantity' => 5000
+            ],
+            [
+                'operation' => 'sell',
+                'unit-cost' => 15,
+                'quantity' => 10000
             ]
         ];
 
-        $collection->add($buyOperation);
-        $collection->add($sellOperation);
-        $collection->remove($sellOperation);
-
-        $this->assertCount(1, $collection->get());
-        $this->assertTrue($collection->has($buyOperation));
+        $this->assertTrue($collection->add($buyOperationA));
+        $this->assertTrue($collection->add($buyOperationB));
+        $this->assertTrue($collection->add($buyOperationC));
+        $this->assertTrue($collection->add($sellOperationA));
+        $this->assertTrue($collection->add($sellOperationB));
+        $this->assertTrue($collection->remove($sellOperationB));
+        $this->assertCount(4, $collection->get());
+        $this->assertTrue($collection->has($buyOperationA));
         $this->assertEquals($expectedCollectionAsArray, $collection->toArray());
-        $this->assertFalse($collection->remove($sellOperation));
-        $this->assertEquals(10, $collection->getAvgPrice());
+        $this->assertFalse($collection->remove($sellOperationB));
+        $this->assertEquals(13.75, $collection->getAvgPrice());
     }
 }

@@ -80,7 +80,7 @@ class OperationTaxCalculatorTest extends TestCase
         $mockOutputStream = Mockery::mock(OutputStream::class, function (Mockery\MockInterface $mock) {
             $mock->shouldReceive('output')
                 ->once()
-                ->with('This collection structure is incorrect');
+                ->with('[ERROR] This collection structure is incorrect');
         });
 
         $calculator = new OperationTaxCalculator(
