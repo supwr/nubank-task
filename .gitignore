@@ -3,3 +3,6 @@ vendor/
 composer.lock
 .phpunit.cache
 .coverage
+infection.log
+infection-per-mutator.md
+infection-summary.txt

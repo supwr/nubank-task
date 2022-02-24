@@ -11,7 +11,7 @@ use App\Infrastructure\Shared\Stream\InputStream;
  * InputStreamTest
  */
 class InputStreamTest extends TestCase
-{    
+{
     /**
      * testInputStream
      *
@@ -19,9 +19,9 @@ class InputStreamTest extends TestCase
      */
     public function testInputStream()
     {
-        $expectedUserInput = 'User input rules!';                        
+        $expectedUserInput = 'User input rules!';
 
-        $inputStream = new InputStream(MemoryStream::setMemoryStream($expectedUserInput));               
+        $inputStream = new InputStream(MemoryStream::setMemoryStream($expectedUserInput));
 
         $this->assertEquals($expectedUserInput, $inputStream->prompt(''));
     }

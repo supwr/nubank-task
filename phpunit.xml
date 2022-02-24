@@ -15,10 +15,12 @@
             <directory suffix=".php">app</directory>
         </include>
         <exclude>
-            <file>./app/main.php</file>  
-            <file>./app/bootstrap.php</file>      
-            <directory>./app/Domain/Exceptions</directory>            
-            <directory>./app/Infrastructure/Exceptions</directory>            
+            <file>./app/main.php</file>
+            <file>./app/bootstrap.php</file>
+            <directory>./app/Domain/Exceptions</directory>
+            <directory>./app/Infrastructure/Exceptions</directory>
+            <file>./app/Infrastructure/Shared/Stream/InputStreamInterface.php</file>
+            <file>./app/Infrastructure/Shared/Stream/OutputStreamInterface.php</file>
         </exclude>
     </coverage>
 </phpunit>

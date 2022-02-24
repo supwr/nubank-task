@@ -52,7 +52,9 @@ class OperationTaxCalculator
 
             $validator = new OperationCollectionValidator($operationCollection);
 
-            if ($validator->hasErrors()) break;
+            if ($validator->hasErrors()) {
+                break;
+            }
 
             $o = OperationCollectionFactory::fromArray($operationCollection);
             $calculatedTaxes = $this->taxCalculator->calculate($o)->toArray();

@@ -84,9 +84,4 @@ class CalculateOperationTax
     {
         return $this->operation->unitCost->toFloat() < $this->averageCost;
     }
-
-    private function isProfit(): bool
-    {
-        return $this->operation->unitCost->toFloat() > $this->averageCost;
-    }
 }
