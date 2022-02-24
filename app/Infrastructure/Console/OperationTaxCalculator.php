@@ -14,6 +14,7 @@ use App\Infrastructure\Shared\Stream\{
     InputStreamInterface,
     OutputStreamInterface
 };
+use Throwable;
 
 /**
  * OperationTaxCalculator
@@ -41,35 +42,39 @@ class OperationTaxCalculator
     {
         $taxResults = [];
 
-        while (true) {
-            $input = $this->inputStream->prompt("Enter your operation list: ");
+        try {
+            while (true) {
+                $input = $this->inputStream->prompt("Enter your operation list: ");
 
-            if (empty($input)) {
-                break;
+                if (empty($input)) {
+                    break;
+                }
+
+                $operationCollection = JsonInputHelper::parseJson($input);
+
+                $validator = new OperationCollectionValidator($operationCollection);
+
+                if ($validator->hasErrors()) {
+                    break;
+                }
+
+                $o = OperationCollectionFactory::fromArray($operationCollection);
+                $calculatedTaxes = $this->taxCalculator->calculate($o)->toArray();
+
+                $taxesDTO =  new OperationResultCollectionDTO($calculatedTaxes);
+                $taxResults[] = $taxesDTO->toArray();
             }
-
-            $operationCollection = JsonInputHelper::parseJson($input);
-
-            $validator = new OperationCollectionValidator($operationCollection);
 
             if ($validator->hasErrors()) {
-                break;
+                $this->outputStream->output('This collection structure is incorrect');
+                return;
             }
 
-            $o = OperationCollectionFactory::fromArray($operationCollection);
-            $calculatedTaxes = $this->taxCalculator->calculate($o)->toArray();
-
-            $taxesDTO =  new OperationResultCollectionDTO($calculatedTaxes);
-            $taxResults[] = $taxesDTO->toArray();
-        }
-
-        if ($validator->hasErrors()) {
-            $this->outputStream->output('This collection structure is incorrect');
-            return;
-        }
-
-        foreach ($taxResults as $tax) {
-            $this->outputStream->output(json_encode($tax));
+            foreach ($taxResults as $tax) {
+                $this->outputStream->output(json_encode($tax));
+            }
+        } catch (Throwable $throwable) {
+            $this->outputStream->output(sprintf("[ERROR] %s", $throwable->getMessage()));
         }
     }
 }
