@@ -2,7 +2,7 @@
 
 To build the application, execute under the root of the application:
 
-```$ make build-app```
+```$ make build```
 
 ### Run
 
@@ -24,4 +24,18 @@ After feeding the application with as many operation collections as you want, yo
 
 To run the tests
 
-```$ make test-app```
+```$ make run-tests```
+
+This project has code coverage of 100%
+
+![Image](code-coverage.png?raw=true)
+
+### Mutation tests
+
+To run the mutation tests
+
+```$ make run-mutation-tests```
+
+This project uses the library `infection-php` to assess its mutation score
+
+![Image](mutation-score.png?raw=true)
