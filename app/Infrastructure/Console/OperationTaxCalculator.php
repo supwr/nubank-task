@@ -56,7 +56,7 @@ class OperationTaxCalculator
                 $validator = new OperationCollectionValidator($operationCollection);
 
                 if ($validator->hasErrors()) {
-                    break;
+                    throw new Exception('This collection structure is incorrect');
                 }
 
                 $o = OperationCollectionFactory::fromArray($operationCollection);
@@ -64,10 +64,6 @@ class OperationTaxCalculator
 
                 $taxesDTO =  new OperationResultCollectionDTO($calculatedTaxes);
                 $taxResults[] = $taxesDTO->toArray();
-            }
-
-            if ($validator->hasErrors()) {
-                throw new Exception('This collection structure is incorrect');
             }
 
             foreach ($taxResults as $tax) {

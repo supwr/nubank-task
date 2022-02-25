@@ -228,14 +228,14 @@ class CalculateOperationTaxTest extends TestCase
     {
         $previousOperationResult = new OperationResult(
             Tax::fromFloat(0),
-            2000
+            1000
         );
 
         $avgCost = 10;
         $operation = new Operation(
             OperationType::fromString(OperationType::SELL_OPERATION),
-            UnitCost::fromFloat(20),
-            Quantity::fromInt(100)
+            UnitCost::fromFloat(10),
+            Quantity::fromInt(200)
         );
 
         $calculator = new CalculateOperationTax($operation, $previousOperationResult, $avgCost);
@@ -243,7 +243,7 @@ class CalculateOperationTaxTest extends TestCase
 
         $this->assertNotEmpty($result->toArray());
         $this->assertEquals(0, $result->value->toFloat());
-        $this->assertEquals(0, $result->debt);
+        $this->assertEquals(1000, $result->debt);
     }
 
     /**
