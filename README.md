@@ -1,5 +1,7 @@
 ### Build
 
+In order for the application to work, it must be built first and foremost. During building the container will be created and the necessary packages will be installed.
+
 To build the application, execute under the root of the application:
 
 ```$ make build```
@@ -13,6 +15,8 @@ To run the app
 You will be prompted by the application to input an operation collection in json format:
 
 ![Image](img/run-app.png?raw=true)
+
+![Image](img/run-app.gif?raw=true)
 
 ```
 [{"operation":"buy", "unit-cost":10, "quantity": 100},{"operation":"sell", "unit-cost":15, "quantity": 50},{"operation":"sell", "unit-cost":15, "quantity": 50}]
