@@ -40,9 +40,9 @@ This project uses the library `infection-php` to assess its mutation score
 
 ![Image](img/mutation-score.png?raw=true)
 
-Final considerations [Pt-BR]
+### Final considerations [Pt-BR]
 
 Foi decidido criar um sistema separado em camadas de aplicação, domínio e infraestrutura, para melhor manutenção e extensibilidade. Com o uso de injeção de dependências e interfaces, a substituição de componentes ficou extremamente possibilitada.
 
-Com foco nos testes, foi buscado não apenas a cobertura de 100%, mas também a implementação de testes de mutação no código. Visando garantir a efetividade dos testes.
+Visando garantir a efetividade dos testes, foi buscado não apenas a cobertura de 100%, mas também a implementação de testes de mutação no código
 
